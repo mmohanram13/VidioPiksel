@@ -2,7 +2,7 @@
     "database": {
         "host": "127.0.0.1",
         "user": "root",
-        "passwd": "641016mmr", 
-        "db": "audio"
+        "passwd": "641016mmr",
+        "db": "vidiopiksel"
     }
 }
