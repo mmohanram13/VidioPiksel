@@ -1,0 +1,8 @@
+image table:
+  -> image_id
+  -> image_name
+
+sub-image table:
+  -> subimage_name
+  -> image_id
+  -> image_hash

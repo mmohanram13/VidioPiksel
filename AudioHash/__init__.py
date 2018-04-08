@@ -78,8 +78,11 @@ class AudioHash(object):
         # align by diffs
         diff_counter = {}
         largest = 0
+        i = 0
         largest_count = 0
         song_id = -1
+        song_list = []
+        song = {}
         for tup in matches:
             sid, diff = tup
             if diff not in diff_counter:
@@ -88,16 +91,28 @@ class AudioHash(object):
                 diff_counter[diff][sid] = 0
             diff_counter[diff][sid] += 1
 
-            if diff_counter[diff][sid] > largest_count:
+            if diff_counter[diff][sid] > 2500:#largest_count:
                 largest = diff
                 largest_count = diff_counter[diff][sid]
+                if sid not in song_list:
+                    song_list.append(sid)
                 song_id = sid
 
-        # extract idenfication
+        for song_id in song_list:
+            i = i + 1;
+            song1 = self.db.get_song_by_id(song_id)
+            if song1:
+                songname = song1.get(AudioHash.SONG_NAME, None)
+            else:
+                return None
+            song [i] = {'song_id': song_id, 'song_name': songname}
+
+        '''# extract idenfication
         song = self.db.get_song_by_id(song_id)
         if song:
             # TODO: Clarify what `get_song_by_id` should return.
             songname = song.get(AudioHash.SONG_NAME, None)
+            print(songname)
         else:
             return None
 
@@ -108,10 +123,11 @@ class AudioHash(object):
         song = {
             AudioHash.SONG_ID : song_id,
             AudioHash.SONG_NAME : songname,
-            AudioHash.CONFIDENCE : largest_count,
-            AudioHash.OFFSET : int(largest),
-            AudioHash.OFFSET_SECS : nseconds,
-            Database.FIELD_FILE_SHA1 : song.get(Database.FIELD_FILE_SHA1, None),}
+            #AudioHash.CONFIDENCE : largest_count,
+            #AudioHash.OFFSET : int(largest),
+            #AudioHash.OFFSET_SECS : nseconds,
+            #Database.FIELD_FILE_SHA1 : song.get(Database.FIELD_FILE_SHA1, None),
+            }'''
         return song
 
     def recognize(self, recognizer, *options, **kwoptions):

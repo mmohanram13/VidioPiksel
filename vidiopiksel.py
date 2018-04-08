@@ -103,7 +103,13 @@ def main():
                 print("\nStarted Identifying...\n")
                 output = None
                 output = aud.recognize(FileRecognizer, filemp3)
-                print("Identified Video is " + output['song_name'])
+                del output['match_time']
+                print (output)
+                if len(output)==1:
+                    print("Identified Video is " + output[1]['song_name'])
+                elif len(output)==0:
+                    print("No Video is Identified")
+                #else:
                 os.system('del ' + filemp3)
                 os.system('rmdir Temp')
                 sys.exit(3)
